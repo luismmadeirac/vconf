@@ -1,3 +1,6 @@
+---@diagnostic disable-next-line: undefined-global
+vim = vim
+
 require("luismmadeirac.autocmds")
 require("luismmadeirac.remap")
 require("luismmadeirac.options")

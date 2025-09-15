@@ -20,6 +20,22 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 disable_background()
 
+-- Fix Mason and Lazy window transparency/visibility
+local function fix_ui_highlights()
+  vim.api.nvim_set_hl(0, "MasonNormal", { bg = "#1a1b26", fg = "#c0caf5" })
+  vim.api.nvim_set_hl(0, "MasonFloatBorder", { bg = "#1a1b26", fg = "#565f89" })
+  vim.api.nvim_set_hl(0, "LazyNormal", { bg = "#1a1b26", fg = "#c0caf5" })
+  vim.api.nvim_set_hl(0, "LazyFloatBorder", { bg = "#1a1b26", fg = "#565f89" })
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "mason", "lazy" },
+  callback = function()
+    vim.wo.winblend = 0  -- Disable transparency for Mason and Lazy
+    fix_ui_highlights()
+  end,
+})
+
 vim.opt.showcmd = false
 vim.opt.cmdheight = 1
 vim.opt.shortmess:append("c")
