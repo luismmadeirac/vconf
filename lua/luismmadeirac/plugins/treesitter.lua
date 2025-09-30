@@ -13,19 +13,6 @@ return {
         enable = true,
       },
       indent = { enable = true },
-      autotag = {
-        enable = true,
-        enable_rename = true,
-        enable_close = true,
-        enable_close_on_slash = true,
-        filetypes = {
-          'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue', 'tsx', 'jsx', 'rescript',
-          'xml',
-          'php',
-          'markdown',
-          'astro', 'glimmer', 'handlebars', 'hbs'
-        },
-      },
       ensure_installed = {
         "json",
         "javascript",
@@ -57,6 +44,20 @@ return {
           node_decremental = "<bs>",
         },
       },
+    })
+
+    -- Setup autotag separately
+    require('nvim-ts-autotag').setup({
+      opts = {
+        enable_close = true,
+        enable_rename = true,
+        enable_close_on_slash = false,
+      },
+      per_filetype = {
+        ["html"] = {
+          enable_close = true
+        }
+      }
     })
   end,
 }

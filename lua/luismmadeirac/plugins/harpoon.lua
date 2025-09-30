@@ -4,11 +4,24 @@ return {
   opts = {
     menu = {
       width = vim.api.nvim_win_get_width(0) - 4,
+      borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
     },
     settings = {
       save_on_toggle = true,
     },
   },
+  config = function(_, opts)
+    local harpoon = require("harpoon")
+    harpoon:setup(opts)
+
+    -- Disable transparency for Harpoon menu
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "harpoon",
+      callback = function()
+        vim.wo.winblend = 0
+      end,
+    })
+  end,
   keys = function()
     local keys = {
       {
@@ -28,7 +41,7 @@ return {
       },
     }
 
-    for i = 1, 5 do
+    for i = 1, 8 do
       table.insert(keys, {
         "<leader>" .. i,
         function()

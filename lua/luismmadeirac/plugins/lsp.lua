@@ -56,11 +56,16 @@ return {
             },
         })
 
-        local lspconfig = require("lspconfig")
-
-        -- Manual LSP setup to avoid mason-lspconfig issues
-        lspconfig.lua_ls.setup({
+        -- Configure global LSP settings
+        vim.lsp.config('*', {
             capabilities = capabilities,
+            root_markers = { '.git' },
+        })
+
+        -- Configure lua_ls
+        vim.lsp.config('lua_ls', {
+            cmd = { 'lua-language-server' },
+            filetypes = { 'lua' },
             settings = {
                 Lua = {
                     diagnostics = {
@@ -77,28 +82,38 @@ return {
             }
         })
 
-        lspconfig.rust_analyzer.setup({
-            capabilities = capabilities,
+        -- Configure rust_analyzer
+        vim.lsp.config('rust_analyzer', {
+            cmd = { 'rust-analyzer' },
+            filetypes = { 'rust' },
         })
 
-        lspconfig.gopls.setup({
-            capabilities = capabilities,
+        -- Configure gopls
+        vim.lsp.config('gopls', {
+            cmd = { 'gopls' },
+            filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
         })
 
-        lspconfig.tailwindcss.setup({
-            capabilities = capabilities,
+        -- Configure tailwindcss
+        vim.lsp.config('tailwindcss', {
+            cmd = { 'tailwindcss-language-server', '--stdio' },
             filetypes = { "html", "css", "scss", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
         })
 
-        lspconfig.ts_ls.setup({
-            capabilities = capabilities,
+        -- Configure ts_ls
+        vim.lsp.config('ts_ls', {
+            cmd = { 'typescript-language-server', '--stdio' },
             filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
         })
 
-        lspconfig.eslint.setup({
-            capabilities = capabilities,
+        -- Configure eslint
+        vim.lsp.config('eslint', {
+            cmd = { 'vscode-eslint-language-server', '--stdio' },
             filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
         })
+
+        -- Enable all LSP servers
+        vim.lsp.enable({'lua_ls', 'rust_analyzer', 'gopls', 'tailwindcss', 'ts_ls', 'eslint'})
 
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
@@ -119,7 +134,17 @@ return {
                 { name = 'luasnip' },
             }, {
                 { name = 'buffer' },
-            })
+            }),
+            window = {
+                completion = {
+                    winblend = 0,
+                    zindex = 50,
+                },
+                documentation = {
+                    winblend = 0,
+                    zindex = 50,
+                },
+            },
         })
 
         vim.diagnostic.config({
@@ -131,7 +156,26 @@ return {
                 source = "always",
                 header = "",
                 prefix = "",
+                winblend = 0,
+                zindex = 50,
             },
         })
+
+        -- Override LSP hover and signature help to disable transparency
+        vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+            vim.lsp.handlers.hover, {
+                border = "rounded",
+                winblend = 0,
+                zindex = 999,
+            }
+        )
+
+        vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+            vim.lsp.handlers.signature_help, {
+                border = "rounded",
+                winblend = 0,
+                zindex = 999,
+            }
+        )
     end
 }
