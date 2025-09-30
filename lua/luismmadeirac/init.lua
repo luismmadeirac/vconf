@@ -30,7 +30,7 @@ autocmd("TextYankPost", {
       higroup = "IncSearch",
       timeout = 40,
     })
-  end,
+ end,
 })
 
 autocmd({ "BufWritePre" }, {
