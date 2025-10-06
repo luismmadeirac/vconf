@@ -115,9 +115,31 @@ return {
         -- Enable all LSP servers
         vim.lsp.enable({'lua_ls', 'rust_analyzer', 'gopls', 'tailwindcss', 'ts_ls', 'eslint'})
 
+        -- LSP keybindings on attach
+        vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+            callback = function(event)
+                local map = function(keys, func, desc)
+                    vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+                end
+
+                map('gd', vim.lsp.buf.definition, 'Goto Definition')
+                map('gr', vim.lsp.buf.references, 'Goto References')
+                map('gI', vim.lsp.buf.implementation, 'Goto Implementation')
+                map('<leader>D', vim.lsp.buf.type_definition, 'Type Definition')
+                map('<leader>rn', vim.lsp.buf.rename, 'Rename')
+                map('<leader>ca', vim.lsp.buf.code_action, 'Code Action')
+                map('K', vim.lsp.buf.hover, 'Hover Documentation')
+                map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
+            end,
+        })
+
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
         cmp.setup({
+            completion = {
+                autocomplete = { require('cmp.types').cmp.TriggerEvent.TextChanged },
+            },
             snippet = {
                 expand = function(args)
                     require('luasnip').lsp_expand(args.body)
@@ -128,6 +150,21 @@ return {
                 ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-y>'] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete(),
+                ['<CR>'] = cmp.mapping.confirm({ select = false }),
+                ['<Tab>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.confirm({ select = true })
+                    else
+                        fallback()
+                    end
+                end, { 'i', 's' }),
+                ['<S-Tab>'] = cmp.mapping(function(fallback)
+                    if cmp.visible() then
+                        cmp.select_prev_item()
+                    else
+                        fallback()
+                    end
+                end, { 'i', 's' }),
             }),
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
@@ -144,6 +181,14 @@ return {
                     winblend = 0,
                     zindex = 50,
                 },
+            },
+            formatting = {
+                format = function(entry, vim_item)
+                    return vim_item
+                end,
+            },
+            experimental = {
+                ghost_text = true,
             },
         })
 
@@ -167,6 +212,8 @@ return {
                 border = "rounded",
                 winblend = 0,
                 zindex = 999,
+                -- Enable markdown rendering
+                stylize_markdown = true,
             }
         )
 
