@@ -1,72 +1,41 @@
-function ColorMyPencils(color)
-  color = color or "rose-pine-moon"
-  vim.cmd.colorscheme(color)
-
-  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-end
-
-_G.ColorMyPencils = ColorMyPencils
-
-local themes = {
-  "rose-pine",
-  "rose-pine-main",
-  "rose-pine-moon",
-  "rose-pine-dawn",
-  "tokyonight",
-  "tokyonight-storm",
-  "tokyonight-night",
-  "tokyonight-day",
-  "brightburn",
-}
-
--- Theme switcher function
-local function switch_theme()
-  vim.ui.select(themes, {
-    prompt = "Select a theme:",
-    format_item = function(item)
-      return item
-    end,
-  }, function(choice)
-    if choice then
-      ColorMyPencils(choice)
-      print("Applied theme: " .. choice)
-    end
-  end)
-end
-
-vim.api.nvim_create_user_command("ThemeSwitch", switch_theme, {})
-vim.keymap.set("n", "<leader>ts", switch_theme, { desc = "Switch Theme" })
-
-vim.keymap.set("n", "<leader>trp", function()
-  ColorMyPencils("rose-pine-moon")
-end, { desc = "Rose Pine Moon" })
-
-vim.keymap.set("n", "<leader>ttn", function()
-  ColorMyPencils("tokyonight-storm")
-end, { desc = "Tokyo Night Storm" })
-
 return {
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    lazy = false,
+    priority = 1002,
+    config = function()
+      require("catppuccin").setup({
+        flavour = "auto",
+        transparent_background = false,
+        term_colors = true,
+        integrations = {
+          cmp = true,
+          telescope = { enabled = true },
+          treesitter = true,
+          mason = true,
+          neo_tree = true,
+          neotest = true,
+          native_lsp = { enabled = true },
+        },
+      })
+    end,
+  },
   {
     "erikbackman/brightburn.vim",
   },
   {
     "folke/tokyonight.nvim",
     lazy = false,
-    priority = 1000,
+    priority = 1001,
     config = function()
       require("tokyonight").setup({
-        style = "storm",
-        transparent = true,
+        transparent = false,
         terminal_colors = true,
         styles = {
-          comments = { italic = false },
-          keywords = { italic = false },
           sidebars = "dark",
           floats = "dark",
         },
-        on_colors = function(colors) end,
-        on_highlights = function(highlights, colors) end,
       })
     end,
   },
@@ -77,13 +46,98 @@ return {
     config = function()
       require("rose-pine").setup({
         disable_background = false,
-        disable_float_background = true,
+        disable_float_background = false,
         styles = {
-          italic = false,
-          transparency = true,
+          transparency = false,
         },
       })
-      ColorMyPencils("rose-pine-moon")
     end,
+  },
+  {
+    "zaldih/themery.nvim",
+    lazy = false,
+    priority = 1003,
+    config = function()
+      require("themery").setup({
+        themes = {
+          {
+            name = "Catppuccin Mocha",
+            colorscheme = "catppuccin-mocha",
+          },
+          {
+            name = "Catppuccin Macchiato",
+            colorscheme = "catppuccin-macchiato",
+          },
+          {
+            name = "Catppuccin Frappe",
+            colorscheme = "catppuccin-frappe",
+          },
+          {
+            name = "Catppuccin Latte",
+            colorscheme = "catppuccin-latte",
+          },
+          {
+            name = "Rose Pine",
+            colorscheme = "rose-pine",
+          },
+          {
+            name = "Rose Pine Main",
+            colorscheme = "rose-pine-main",
+          },
+          {
+            name = "Rose Pine Moon",
+            colorscheme = "rose-pine-moon",
+          },
+          {
+            name = "Rose Pine Dawn",
+            colorscheme = "rose-pine-dawn",
+          },
+          {
+            name = "Tokyo Night",
+            colorscheme = "tokyonight",
+          },
+          {
+            name = "Tokyo Night Storm",
+            colorscheme = "tokyonight-storm",
+          },
+          {
+            name = "Tokyo Night Night",
+            colorscheme = "tokyonight-night",
+          },
+          {
+            name = "Tokyo Night Day",
+            colorscheme = "tokyonight-day",
+          },
+          {
+            name = "Brightburn",
+            colorscheme = "brightburn",
+          },
+        },
+        livePreview = true, -- Apply theme while browsing
+      })
+
+      -- Set default theme
+      vim.cmd.colorscheme("catppuccin-mocha")
+
+      -- Ensure background is properly set after colorscheme loads
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        callback = function()
+          -- Small delay to let theme fully load
+          vim.defer_fn(function()
+            -- Get the theme's Normal highlight
+            local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
+            if normal.bg then
+              -- Re-apply it to ensure it sticks
+              vim.api.nvim_set_hl(0, "Normal", normal)
+              vim.api.nvim_set_hl(0, "NormalNC", { bg = normal.bg, fg = normal.fg })
+            end
+            vim.cmd("redraw!")
+          end, 10)
+        end,
+      })
+    end,
+    keys = {
+      { "<leader>tc", "<cmd>Themery<cr>", desc = "Select Theme" },
+    },
   },
 }

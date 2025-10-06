@@ -1,24 +1,26 @@
 
-local transparency_amount = 80
+-- Transparency disabled to allow themes to control backgrounds
+local transparency_amount = 0
 
 vim.opt.winblend = transparency_amount
 vim.opt.pumblend = transparency_amount
 vim.opt.termguicolors = true
 
-local function disable_background()
-  vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
-  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
-  vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE", ctermbg = "NONE" })
-  vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = "NONE", ctermbg = "NONE" })
-  vim.api.nvim_set_hl(0, "NeoTreeFloatNormal", { bg = "NONE", ctermbg = "NONE" })
-end
+-- DISABLED: This was forcing transparent backgrounds on all themes
+-- local function disable_background()
+--   vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+--   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
+--   vim.api.nvim_set_hl(0, "SignColumn", { bg = "NONE", ctermbg = "NONE" })
+--   vim.api.nvim_set_hl(0, "NeoTreeNormal", { bg = "NONE", ctermbg = "NONE" })
+--   vim.api.nvim_set_hl(0, "NeoTreeFloatNormal", { bg = "NONE", ctermbg = "NONE" })
+-- end
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = disable_background,
-})
+-- vim.api.nvim_create_autocmd("ColorScheme", {
+--   pattern = "*",
+--   callback = disable_background,
+-- })
 
-disable_background()
+-- disable_background()
 
 -- Fix Mason and Lazy window transparency/visibility
 local function fix_ui_highlights()

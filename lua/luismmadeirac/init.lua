@@ -8,7 +8,7 @@ require("luismmadeirac.set")
 require("luismmadeirac.lazy")
 
 local augroup = vim.api.nvim_create_augroup
-local LuismmadeiracGroup = augroup("Luismmadeirac", {})
+local luismmadeiracGroup = augroup("luismmadeirac", {})
 
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup("HighlightYank", {})
@@ -34,13 +34,13 @@ autocmd("TextYankPost", {
 })
 
 autocmd({ "BufWritePre" }, {
-  group = LuismmadeiracGroup,
+  group = luismmadeiracGroup,
   pattern = "*",
   command = [[%s/\s\+$//e]],
 })
 
 autocmd("LspAttach", {
-  group = LuismmadeiracGroup,
+  group = luismmadeiracGroup,
   callback = function(e)
     local opts = { buffer = e.buf }
     vim.keymap.set("n", "gd", function()

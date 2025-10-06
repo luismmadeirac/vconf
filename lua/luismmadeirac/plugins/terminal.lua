@@ -15,7 +15,7 @@ return {
       desc = "ToggleTerm (Horizontal 20 lines)",
     },
     {
-      "<leader>tv",
+      "<leader>tV",
       "<cmd>ToggleTerm direction=vertical size=30<cr>",
       mode = { "n", "t" },
       desc = "ToggleTerm (Vertical 30 cols)",
