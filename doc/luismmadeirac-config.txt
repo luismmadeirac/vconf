@@ -1,0 +1,13 @@
+*luismmadeirac-config.txt*
+
+Some documentation for parts of my Neovim configuration.
+
+Author: Luis M Madeira
+
+==============================================================================
+
+COMMANDS                                        *luismmadeirac-commands*
+
+                                                *:Messages*
+:Messages
+                Open the `:messages` in a split at the bottom of the viewport.
