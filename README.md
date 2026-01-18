@@ -1,82 +1,39 @@
-# NeoVim Config v2
+# Neovim configuration
 
+This repository lives in `~/.config/nvim` and is my personal Neovim setup powered by Lua, `lazy.nvim`, and a mix of curated plugins. The goal is to stay fast, responsive, and workspace-aware while leaning on composable modules (see `lua/user`) that can be extended from other machines.
 
-## Features
+## Requirements
 
-- **Plugin Management**: [lazy.nvim](https://github.com/folke/lazy.nvim) for fast and efficient plugin loading
-- **LSP Support**: Native LSP configuration with code actions, diagnostics, and auto-completion
-- **Fuzzy Finding**: Telescope for powerful file and text searching
-- **Syntax Highlighting**: TreeSitter for enhanced syntax highlighting and code understanding
-- **File Navigation**: Harpoon for quick file switching and Oil for file management
-- **Version Control**: Seamless Git integration
-- **Theme Switching**: Multiple colorschemes with easy switching (Rose Pine, Tokyo Night, Brightburn)
-- **Terminal Integration**: Built-in terminal support
-- **Focus Mode**: Zen mode for distraction-free coding
+- Neovim 0.10+ (I develop against the latest stable release and some plugins rely on the newer Lua APIs).
+- `git` (used by `lazy.nvim` to bootstrap itself and install plugins).
+- Optional: `build-essential` / equivalent toolchain for native builds (`telescope-fzf-native`, `snacks.nvim`, etc.).
 
-## Installation
+## Setup
 
-1. **Backup your existing Neovim configuration:**
-   ```bash
-   mv ~/.config/nvim ~/.config/nvim.bak
-   ```
+1. Clone the repo to `~/.config/nvim`.
+2. Start Neovim: `nvim --headless -c 'Lazy sync' -c 'qa'` to install plugins without opening the UI.
+3. Close Neovim and reopen normally; `lazy.nvim` handles future updates from `:Lazy sync` or `:Lazy update`.
+4. (Optional) Set `NVIM_LOCAL_PLUGINS` if you develop against local plugin sources.
 
-2. **Clone this repository:**
-   ```bash
-   git clone <repository-url> ~/.config/nvim
-   ```
+## Repository structure
 
-3. **Launch Neovim:**
-   ```bash
-   nvim
-   ```
-   Lazy.nvim will automatically install all plugins on first launch.
+- `init.lua`: entry point. Sets up globals (`Config`, `Path`, `pb`) and registers autocmds plus helper functions.
+- `lua/user/`: configurable modules for keymaps, plugin configs, LSP, utilities, and lazy-loading helpers.
+- `docs/keymaps.md`: consolidated cheat sheet for the leader key, modules, and frequently used mappings.
+- `local-plugins/`: home for local plugin overrides (e.g., `feline.nvim`).
+- `mappings.vim`, `autocommands.vim`, `lua/user/au.lua`, and friends augment legacy VimScript or bootstrap behaviors.
 
-## Key Plugins
+## Key highlights
 
-- **[lazy.nvim](https://github.com/folke/lazy.nvim)** - Plugin manager
-- **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)** - Fuzzy finder
-- **[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)** - Syntax highlighting
-- **[harpoon](https://github.com/ThePrimeagen/harpoon)** - Quick file navigation
-- **[oil.nvim](https://github.com/stevearc/oil.nvim)** - File explorer
-- **[undotree](https://github.com/mbbill/undotree)** - Visualize undo history
-- **[zen-mode.nvim](https://github.com/folke/zen-mode.nvim)** - Distraction-free coding
-- **[rose-pine](https://github.com/rose-pine/neovim)** - Colorscheme
-- **[tokyonight.nvim](https://github.com/folke/tokyonight.nvim)** - Colorscheme
+- Lazy-loaded plugin tree managed via `lua/user/plugins/init.lua` with helpers for local forks.
+- Custom UI helpers in `lua/user/lib.lua` and `Config.fn.*` togglers for quickfix, diagnostics, outline, and message windows.
+- Theme picker, snack-based pickers, Neorg/Harpoon/Overseer/neotest integrations, and curated terminal helpers (e.g., `toggleterm`, `Trouble`, `Oil`).
+- Notification system replaces `vim.notify` with `nvim-notify` for polished popups.
 
-## Clipboard
+## Customization tips
 
-| Mapping | Action | Mode |
-|---------|--------|------|
-| `<leader>y` | Yank to system clipboard | Normal/Visual |
-| `<leader>Y` | Yank line to system clipboard | Normal |
-| `<leader>p` | Paste without overwriting register | Visual |
-| `<leader>d` | Delete to black hole register | Normal/Visual |
+- Update `lua/user/settings.lua` or the modules inside `lua/user/plugins/` to swap colors, change defaults, or tweak plugin options.
+- Inspect `lua/user/keymaps.lua` and `docs/keymaps.md` before adding new shortcuts to avoid conflicts.
+- Use `:Lazy home` or explore `lua/user/lazy.lua` to understand how modules are lazy-loaded.
 
-## Configuration Structure
-
-```
-~/.config/nvim/
-├── init.lua                          # Entry point
-├── lua/luismmadeirac/
-│   ├── init.lua                      # Main configuration
-│   ├── lazy.lua                      # LazyVim setup
-│   ├── set.lua                       # Vim options
-│   ├── options.lua                   # Additional options
-│   ├── remap.lua                     # Key mappings
-│   ├── autocmds.lua                  # Auto commands
-│   └── plugins/                      # Plugin configurations
-│       ├── init.lua
-│       ├── colors.lua
-│       ├── telescope.lua
-│       ├── treesitter.lua
-│       ├── lsp.lua
-│       ├── harpoon.lua
-│       ├── oil.lua
-│       ├── undotree.lua
-│       ├── zen-mode.lua
-│       ├── terminal.lua
-│       ├── line.lua
-│       ├── extras.lua
-│       └── disable.lua
-└── README.md
-```
+Feel free to fork, tweak, or prune plugins to match your workflow—this setup is intentionally modular to make those changes easy.
