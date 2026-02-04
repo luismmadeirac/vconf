@@ -95,6 +95,24 @@ require("lazy").setup({
     branch = "main",
     build = ":TSUpdate",
     config = conf("treesitter"),
+    init = function()
+      -- Add nvim-treesitter/runtime to runtimepath for queries
+      local ts_runtime = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/runtime"
+      if vim.fn.isdirectory(ts_runtime) == 1 then
+        vim.opt.runtimepath:append(ts_runtime)
+      end
+    end,
+  },
+
+  -- Completion (blink.cmp)
+  {
+    "saghen/blink.cmp",
+    version = "*",
+    config = conf("blink-cmp"),
+    event = "InsertEnter",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+    },
   },
 
   -- LSP Configuration
@@ -121,17 +139,24 @@ require("lazy").setup({
         opts = {
           ensure_installed = {
             "lua_ls",
-            "ts_ls",
+            "vtsls",
             "jsonls",
             "bashls",
           },
           automatic_installation = true,
         },
       },
+      -- Completion engine
+      "saghen/blink.cmp",
       -- Neodev for better Lua LSP
       {
         "folke/neodev.nvim",
         opts = {},
+      },
+      -- SchemaStore for JSON schemas (package.json, tsconfig.json, etc.)
+      {
+        "b0o/schemastore.nvim",
+        lazy = true,
       },
     },
     config = function()
@@ -401,6 +426,11 @@ require("lazy").setup({
   { "cpwrs/americano.nvim" },
   { "dgox16/oldworld.nvim" },
   { "xeind/nightingale.nvim" },
+  { "nyoom-engineering/oxocarbon.nvim" },
+  {
+    "jesseleite/nvim-noirbuddy",
+    dependencies = { "tjdevries/colorbuddy.nvim" },
+  },
 }, {
   ui = {
     border = "single",

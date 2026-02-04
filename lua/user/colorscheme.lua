@@ -8,7 +8,7 @@ local hi, hi_link = hl.hi, hl.hi_link
 local M = {}
 
 -- Default colorscheme settings
-M.name = "americano"
+M.name = "oxocarbon"
 M.bg = "dark"
 
 local base = {

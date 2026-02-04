@@ -39,6 +39,8 @@ M.themes = {
   "mellow",
   "jellybeans-nvim",
   "americano",
+  "noirbuddy",
+  "oxocarbon",
 }
 
 -- Current theme index

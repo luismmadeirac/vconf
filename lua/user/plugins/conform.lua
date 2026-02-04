@@ -31,6 +31,7 @@ return function()
       bash = { "shfmt" },
       sh = { "shfmt" },
       zsh = { "shfmt" },
+      make = { "trim_whitespace", "trim_newlines" },
     },
   })
 

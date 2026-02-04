@@ -120,9 +120,29 @@ end
 -- Java
 -- require("user.lsp.java")
 
--- Typescript
--- lspconfig.tsserver.setup(M.create_config())
--- require("user.lsp.typescript")
+-- Typescript (vtsls - richer hover with expanded types)
+vim.lsp.config("vtsls", M.create_config({
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+  },
+  settings = {
+    typescript = {
+      updateImportsOnFileMove = { enabled = "always" },
+    },
+    javascript = {
+      updateImportsOnFileMove = { enabled = "always" },
+    },
+    vtsls = {
+      enableMoveToFileCodeAction = true,
+    },
+  },
+}))
+vim.lsp.enable("vtsls")
 
 -- Deno
 -- lspconfig.denols.setup(M.create_config())
@@ -160,6 +180,17 @@ vim.lsp.enable("lua_ls")
 
 -- C#
 -- require("user.lsp.csharp")
+
+-- JSON (with package.json schema support)
+vim.lsp.config("jsonls", M.create_config({
+  settings = {
+    json = {
+      schemas = require('schemastore').json.schemas(),
+      validate = { enable = true },
+    },
+  },
+}))
+vim.lsp.enable("jsonls")
 
 -- Haxe
 if lspconfig.util then
