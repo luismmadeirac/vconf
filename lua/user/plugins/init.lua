@@ -140,6 +140,11 @@ require("lazy").setup({
           ensure_installed = {
             "lua_ls",
             "vtsls",
+            "gopls",
+            "eslint",
+            "tailwindcss",
+            "html",
+            "cssls",
             "jsonls",
             "bashls",
           },
@@ -169,6 +174,12 @@ require("lazy").setup({
     "stevearc/conform.nvim",
     config = conf("conform"),
     event = "VeryLazy",
+  },
+
+  {
+    "mfussenegger/nvim-lint",
+    config = conf("lint"),
+    event = { "BufReadPre", "BufNewFile" },
   },
 
   -- Git
