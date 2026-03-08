@@ -33,7 +33,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Actions
     map("n", "<leader>rn", vim.lsp.buf.rename, vim.tbl_extend("force", opts, { desc = "LSP: Rename" }))
     map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, vim.tbl_extend("force", opts, { desc = "LSP: Code action" }))
-    map("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end, vim.tbl_extend("force", opts, { desc = "LSP: Format" }))
+    map("n", "<leader>f", function()
+      local ok, conform = pcall(require, "conform")
+      if ok then
+        conform.format({ async = true, lsp_fallback = true })
+      else
+        vim.lsp.buf.format({ async = true })
+      end
+    end, vim.tbl_extend("force", opts, { desc = "LSP: Format" }))
     
     -- Diagnostics
     map("n", "[d", vim.diagnostic.goto_prev, vim.tbl_extend("force", opts, { desc = "LSP: Previous diagnostic" }))

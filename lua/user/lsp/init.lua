@@ -144,6 +144,60 @@ vim.lsp.config("vtsls", M.create_config({
 }))
 vim.lsp.enable("vtsls")
 
+vim.lsp.config("eslint", M.create_config({
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+    "vue",
+    "svelte",
+  },
+  settings = {
+    format = false,
+    workingDirectory = { mode = "auto" },
+  },
+}))
+vim.lsp.enable("eslint")
+
+vim.lsp.config("gopls", M.create_config({
+  settings = {
+    gopls = {
+      completeUnimported = true,
+      usePlaceholders = true,
+      gofumpt = true,
+      staticcheck = true,
+      analyses = {
+        unusedparams = true,
+        shadow = true,
+      },
+    },
+  },
+  root_dir = lspconfig.util and lspconfig.util.root_pattern("go.work", "go.mod", ".git") or nil,
+}))
+vim.lsp.enable("gopls")
+
+vim.lsp.config("tailwindcss", M.create_config({
+  filetypes = {
+    "html",
+    "css",
+    "scss",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+  },
+}))
+vim.lsp.enable("tailwindcss")
+
+vim.lsp.config("html", M.create_config())
+vim.lsp.enable("html")
+
+vim.lsp.config("cssls", M.create_config())
+vim.lsp.enable("cssls")
+
 -- Deno
 -- lspconfig.denols.setup(M.create_config())
 
