@@ -182,6 +182,25 @@ require("lazy").setup({
     event = { "BufReadPre", "BufNewFile" },
   },
 
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+    },
+    config = conf("dap"),
+    keys = {
+      { "<F5>", function() require("dap").continue() end, desc = "DAP: Continue" },
+      { "<F10>", function() require("dap").step_over() end, desc = "DAP: Step over" },
+      { "<F11>", function() require("dap").step_into() end, desc = "DAP: Step into" },
+      { "<F12>", function() require("dap").step_out() end, desc = "DAP: Step out" },
+      { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "DAP: Toggle breakpoint" },
+      { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, desc = "DAP: Conditional breakpoint" },
+      { "<leader>dr", function() require("dap").repl.open() end, desc = "DAP: Open REPL" },
+      { "<leader>du", function() require("dapui").toggle() end, desc = "DAP: Toggle UI" },
+    },
+  },
+
   -- Git
   use_local({
     "sindrets/vim-fugitive",
