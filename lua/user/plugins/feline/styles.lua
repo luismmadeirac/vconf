@@ -214,16 +214,20 @@ M.themes = {
           and M.color_palettes.doom_light
           or M.color_palettes.doom_dark
 
+      local dim_fallbacks = vim.o.background == "light"
+          and { dim300 = "#666666", dim400 = "#777777", dim700 = "#cccccc" }
+          or  { dim300 = "#a0a0a0", dim400 = "#7a7a7a", dim700 = "#3a3a3a" }
+
       c.current_palette = vim.tbl_deep_extend("force", base_palette, {
-        dim100 = hl.get_fg("StatusLineDim100"),
-        dim200 = hl.get_fg("StatusLineDim200"),
-        dim300 = hl.get_fg("StatusLineDim300"),
-        dim400 = hl.get_fg("StatusLineDim400"),
-        dim500 = hl.get_fg("StatusLineDim500"),
-        dim600 = hl.get_fg("StatusLineDim600"),
-        dim700 = hl.get_fg("StatusLineDim700"),
-        dim800 = hl.get_fg("StatusLineDim800"),
-        dim900 = hl.get_fg("StatusLineDim900"),
+        dim100 = hl.get_fg("StatusLineDim100") or dim_fallbacks.dim300,
+        dim200 = hl.get_fg("StatusLineDim200") or dim_fallbacks.dim300,
+        dim300 = hl.get_fg("StatusLineDim300") or dim_fallbacks.dim300,
+        dim400 = hl.get_fg("StatusLineDim400") or dim_fallbacks.dim400,
+        dim500 = hl.get_fg("StatusLineDim500") or dim_fallbacks.dim400,
+        dim600 = hl.get_fg("StatusLineDim600") or dim_fallbacks.dim400,
+        dim700 = hl.get_fg("StatusLineDim700") or dim_fallbacks.dim700,
+        dim800 = hl.get_fg("StatusLineDim800") or dim_fallbacks.dim700,
+        dim900 = hl.get_fg("StatusLineDim900") or dim_fallbacks.dim700,
       })
 
       local mode_colors = {
@@ -285,17 +289,18 @@ M.themes = {
           style = "bold",
         },
         ["file.search"] = {
-          fg = "dim400",
+          fg = "yellow",
+          style = "bold",
         },
         ["file.line_info"] = {
-          fg = "dim400",
+          fg = "dim300",
         },
         ["file.line_percent"] = {
-          fg = "dim400",
+          fg = "dim300",
           style = "bold",
         },
         ["file.line_count"] = {
-          fg = "dim400",
+          fg = "dim300",
         },
         ["file.indent_info"] = {
           fg = "cyan",

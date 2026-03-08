@@ -123,7 +123,7 @@ function M.apply_theme(theme, opt)
   for _, kind in ipairs({ statusline.active, statusline.inactive }) do
     for _, section in ipairs(kind) do
       for _, component in ipairs(section) do
-        local field = component.name and component.name:match("user%.(.*)") or ""
+        local field = component.name and component.name:match("user%.(.-)#") or ""
         component.hl = t[field] or component.hl
         if not component.hl then
           component.hl = vim.deepcopy(default_hl)
@@ -280,13 +280,13 @@ M.components = {
           if vim.bo.buftype == "terminal" then
             basename = "sh"
           else
-            local path = Path.from(api.nvim_buf_get_name(0))
-            basename = path:basename()
-            ext = path:extension()
+            local bufname = api.nvim_buf_get_name(0)
+            basename = vim.fn.fnamemodify(bufname, ":t")
+            ext = vim.fn.fnamemodify(bufname, ":e")
           end
 
           local icon, _ = devicons.get_icon(basename, ext, { default = false })
-          return (icon or "")
+          return (icon or "")
         end
       },
       enabled = function()
@@ -299,9 +299,9 @@ M.components = {
         if vim.bo.buftype == "terminal" then
           basename = "sh"
         else
-          local path = Path.from(api.nvim_buf_get_name(0))
-          basename = path:basename()
-          ext = path:extension()
+          local bufname = api.nvim_buf_get_name(0)
+          basename = vim.fn.fnamemodify(bufname, ":t")
+          ext = vim.fn.fnamemodify(bufname, ":e")
         end
 
         local _, color = devicons.get_icon_color(basename, ext)
@@ -441,11 +441,12 @@ M.components = {
 
           if vim.b[0].gitsigns_head then
             rev = vim.b[0].gitsigns_head
-            path = Path.from(api.nvim_buf_get_name(0))
-            dir = path:parent():unwrap_or_else(Path.cwd)
+            local bufname = api.nvim_buf_get_name(0)
+            path = Path.from(bufname)
+            dir = Path.from(vim.fn.fnamemodify(bufname, ":h"))
           else
             rev = vim.g.gitsigns_head or ""
-            path = Path.cwd()
+            path = Path.from(vim.fn.getcwd())
             dir = path
           end
 
@@ -471,7 +472,7 @@ M.components = {
 
             async.spawn(function()
               -- Check reflog to find the last checkout
-              local cwd = dir:is_readable():await() and dir or Path.cwd()
+              local cwd = dir:exists() and dir or Path.from(vim.fn.getcwd())
 
               local reflog = Job.new({
                 cmd = {
@@ -609,11 +610,10 @@ function M.update()
       -- LEFT :
       extend_comps(
         {
-          comps.block(),
           comps.vi_mode(),
           comps.paste_mode(),
-          -- comps.file.info(),
-          comps.git.branch(),
+          comps.file.icon(),
+          comps.file.info(),
           comps.git.diff_add(),
           comps.git.diff_mod(),
           comps.git.diff_del(),
@@ -635,12 +635,11 @@ function M.update()
             comps.file.line_percent(),
             comps.file.line_count(),
             comps.file.filetype(),
-            comps.lsp_server(),
             comps.file.indent_info(),
             comps.file.format(),
-            -- comps.git.branch(),
+            comps.git.branch(),
           },
-          { left_sep = " " }
+          { left_sep = "  ", right_sep = " " }
         ),
         { filler_section(1) }
       ),
