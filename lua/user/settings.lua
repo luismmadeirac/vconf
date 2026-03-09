@@ -46,6 +46,7 @@ opt.breakindent = true
 -- Files
 opt.hidden = true
 opt.swapfile = true
+opt.undofile = true
 opt.updatetime = 4096
 
 -- Colors

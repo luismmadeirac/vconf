@@ -418,6 +418,14 @@ require("lazy").setup({
     event = "VeryLazy",
   },
 
+  -- Undo tree
+  {
+    "mbbill/undotree",
+    keys = {
+      { "<leader>u", "<cmd>UndotreeToggle<cr>", desc = "Undotree: Toggle" },
+    },
+  },
+
   -- Zen Mode
   {
     "folke/zen-mode.nvim",
