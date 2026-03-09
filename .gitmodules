@@ -1,0 +1,3 @@
+[submodule "local-plugins/feline.nvim"]
+	path = local-plugins/feline.nvim
+	url = https://github.com/famiu/feline.nvim.git
