@@ -4,6 +4,37 @@ return function()
   
   local pb = Config.common.pb
 
+  local ok_ts_configs, ts_configs = pcall(require, "nvim-treesitter.configs")
+  if ok_ts_configs then
+    ts_configs.setup({
+      ensure_installed = {
+        "bash",
+        "css",
+        "dockerfile",
+        "go",
+        "gomod",
+        "gosum",
+        "gotmpl",
+        "html",
+        "javascript",
+        "jsdoc",
+        "json",
+        "jsonc",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "regex",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "yaml",
+      },
+      auto_install = true,
+    })
+  end
+
   local custom_parsers = {
     haxe = {
       install_info = {

@@ -6,6 +6,12 @@ local function get_uid()
   return "user_comp_" .. uid_counter
 end
 
+local call_counter = 0
+local function get_call_uid()
+  call_counter = call_counter + 1
+  return call_counter
+end
+
 ---@class StatusComponent.provider
 ---@field get function|string
 ---@field opts table
@@ -37,7 +43,7 @@ function StatusComponent:init(opt)
   function mt.__call(_, call_opt)
     call_opt = call_opt or {}
     return vim.tbl_extend("keep", call_opt, {
-      name = self.name,
+      name = self.name .. "#" .. get_call_uid(),
       provider = self:get_provider_spec(call_opt.provider_config),
       enabled = self.enabled,
       icon = self.icon,

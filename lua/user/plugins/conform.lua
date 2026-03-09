@@ -20,6 +20,7 @@ return function()
       javascriptreact = prettier,
       typescript = prettier,
       typescriptreact = prettier,
+      go = { "goimports", "gofumpt" },
       css = prettier,
       scss = prettier,
       sass = prettier,
