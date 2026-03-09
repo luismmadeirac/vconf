@@ -10,7 +10,7 @@ This repository lives in `~/.config/nvim` and is my personal Neovim setup powere
 
 ## Setup
 
-1. Clone the repo to `~/.config/nvim`.
+1. Clone the repo to `~/.config/nvim` with submodules: `git clone --recurse-submodules <repo-url> ~/.config/nvim` (or run `git submodule update --init` after a regular clone).
 2. Start Neovim: `nvim --headless -c 'Lazy sync' -c 'qa'` to install plugins without opening the UI.
 3. Close Neovim and reopen normally; `lazy.nvim` handles future updates from `:Lazy sync` or `:Lazy update`.
 4. (Optional) Set `NVIM_LOCAL_PLUGINS` if you develop against local plugin sources.
