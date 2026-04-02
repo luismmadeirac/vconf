@@ -426,6 +426,19 @@ require("lazy").setup({
     },
   },
 
+  -- Search and Replace
+  {
+    "nvim-pack/nvim-spectre",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {},
+    keys = {
+      { "<leader>sr", function() require("spectre").toggle() end, desc = "Spectre: Toggle" },
+      { "<leader>sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Spectre: Search current word" },
+      { "<leader>sw", function() require("spectre").open_visual() end, mode = "v", desc = "Spectre: Search selection" },
+      { "<leader>sp", function() require("spectre").open_file_search({ select_word = true }) end, desc = "Spectre: Search in file" },
+    },
+  },
+
   -- Zen Mode
   {
     "folke/zen-mode.nvim",
